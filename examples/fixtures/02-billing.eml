@@ -1,0 +1,10 @@
+From: Billing Example <billing@example.com>
+To: reader@example.com
+Subject: 九月云服务账单已生成
+Date: Wed, 30 Sep 2026 08:20:00 +0800
+Message-ID: <bill-002@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+你的九月云服务账单已生成，请登录官方网站查看明细。本邮件不需要直接回复。
