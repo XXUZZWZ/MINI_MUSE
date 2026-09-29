@@ -16,3 +16,5 @@ video/voice.wav
 video/*.webm
 video/*.mp4
 video/*.log
+
+video/preview.png
