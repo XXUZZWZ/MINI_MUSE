@@ -1,0 +1,15 @@
+{
+  "name": "minmuse-remotion-video",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "render": "remotion render src/index.jsx MinMuse ../MinMuse_最小邮件Agent_Remotion_10fps.mp4 --codec h264 --crf 24 --x264-preset veryfast --concurrency 4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.530",
+    "@remotion/media": "4.0.530",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "remotion": "4.0.530"
+  }
+}

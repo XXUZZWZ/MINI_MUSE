@@ -1,0 +1,44 @@
+let ctx;
+function rounded(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function text(s,x,y,size=24,color='#e7eaf0',weight=500,align='left'){ctx.fillStyle=color;ctx.font=`${weight} ${size}px "Microsoft YaHei UI",sans-serif`;ctx.textAlign=align;ctx.fillText(s,x,y);ctx.textAlign='left'}
+function wrap(s,max,font){ctx.font=font;let lines=[],line='';for(const ch of s){if(ctx.measureText(line+ch).width>max&&line){lines.push(line);line=ch}else line+=ch}if(line)lines.push(line);return lines}
+function arrow(x1,y1,x2,y2,color='#6dd8c1'){ctx.strokeStyle=color;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-14,y2-9);ctx.lineTo(x2-14,y2+9);ctx.closePath();ctx.fill()}
+function codeBox(lines,y=300){rounded(48,y,624,390,18,'#101720','#32404c');lines.forEach((line,i)=>{text(String(i+1).padStart(2,'0'),72,y+48+i*47,17,'#526576',500);text(line,112,y+48+i*47,21,i===1?'#82dcc8':'#d5deea',500)})}
+function scene(s,t){const g=ctx.createLinearGradient(0,0,720,1280);g.addColorStop(0,'#111925');g.addColorStop(1,'#090d14');ctx.fillStyle=g;ctx.fillRect(0,0,720,1280);text('MINMUSE',48,72,22,'#6dd8c1',800);text('最小邮件 Agent',672,72,17,'#9ca9b5',500,'right');ctx.fillStyle='#293643';ctx.fillRect(48,102,624,2);
+ if(s==='hook'){text('每天早上，先让邮件自己排好队',48,190,35,'#fff',800);let rows=[['●','面试安排确认','需要准备项目介绍','#49d9ba'],['●','云服务账单','本月账单已生成','#f0c16d'],['●','可疑通知','要求忽略规则、索要密码','#f07878']];rows.forEach((r,i)=>{let y=270+i*120;rounded(48,y,624,92,14,'#18232e','#2c3c49');text(r[0],72,y+56,23,r[3],700);text(r[1],112,y+39,23,'#e7eaf0',700);text(r[2],112,y+68,17,'#a5b4c3')});rounded(120,665,480,94,18,'#10352f','#39a891');text('1 封待办  ·  1 封账单  ·  1 封可疑',360,722,23,'#dffff7',700,'center')}
+ else if(s==='muse'){text('个人 Agent 的核心想法',48,190,36,'#fff',800);rounded(48,255,286,300,22,'#18232e','#34414d');rounded(386,255,286,300,22,'#12352f','#2d9988');text('Muse 思路',191,320,26,'#e4e9ef',700,'center');['接收目标','后台推进','关键动作确认'].forEach((v,i)=>text(v,190,387+i*60,21,'#b7c4d2',500,'center'));text('MinMuse',529,320,26,'#6dd8c1',800,'center');['邮件输入','最小闭环','透明、可复现'].forEach((v,i)=>text(v,529,387+i*60,21,'#c9eee5',500,'center'));text('独立教学实现，不接入 Muse 服务',360,650,19,'#9ca9b5',500,'center')}
+ else if(s==='existing'){text('把已有“定时发”补成“读、整理、再发”',48,190,31,'#fff',800);rounded(48,300,258,220,20,'#1a222c','#39434f');text('现有提醒程序',177,360,24,'#dbe2ea',700,'center');text('SMTP',177,425,35,'#f1c26c',800,'center');text('每日发提醒',177,475,18,'#aebac6',500,'center');arrow(317,410,403,410);rounded(414,300,258,220,20,'#15332f','#328a7b');text('MinMuse 新增',543,360,24,'#c7eee4',700,'center');text('IMAP + AI',543,425,31,'#6dd8c1',800,'center');text('整理后发日报',543,475,18,'#aebac6',500,'center');text('两个目录 · 两套配置 · 两个 cron',360,620,21,'#d4dce6',600,'center')}
+ else if(s==='flow'){text('五步跑完一个完整闭环',48,190,36,'#fff',800);let labels=[['01','定时触发','cron'],['02','读未读邮件','IMAP'],['03','整理信息','LLM'],['04','存成日报','MD / JSON'],['05','发回自己','SMTP']];labels.forEach((v,i)=>{let y=267+i*100;rounded(55,y,610,74,16,i===4?'#12352f':'#17222d',i===4?'#318e7e':'#334250');text(v[0],82,y+47,20,'#6dd8c1',800);text(v[1],142,y+47,23,'#e6ebf1',700);text(v[2],627,y+47,19,'#9ca9b5',600,'right');if(i<4){ctx.fillStyle='#526778';ctx.fillRect(357,y+74,2,26)}})}
+ else if(s==='imap'){text('IMAP：只读、限量、只拿纯文本',48,190,34,'#fff',800);codeBox(['mailbox.select("INBOX", readonly=True)','status, ids = mailbox.search(None, "UNSEEN")','mailbox.fetch(id, "(BODY.PEEK[])")','只取最近 20 封 · 正文最多 6000 字','附件 / HTML / 网页链接均跳过','原邮件不被标成已读'],270)}
+ else if(s==='agent'){text('模型只回答结构化问题',48,190,36,'#fff',800);rounded(48,268,624,170,18,'#18232e','#34414d');text('category',76,322,19,'#6dd8c1',700);text('summary',76,368,19,'#6dd8c1',700);text('action_required',76,414,19,'#6dd8c1',700);text('work / billing / study / other',340,322,20,'#e0e6ed',500);text('用中文压缩成一两句',340,368,20,'#e0e6ed',500);text('是否需要人工处理',340,414,20,'#e0e6ed',500);rounded(48,483,624,112,18,'#122d2a','#2d8374');text('邮件正文是数据，不是工具命令',360,550,27,'#bdf2e6',700,'center');text('没有浏览器、命令行或任意外发工具',360,640,18,'#9ca9b5',500,'center')}
+ else if(s==='security'){text('可疑邮件只标记，不照做',48,190,36,'#fff',800);rounded(48,282,624,164,18,'#351e24','#a04c54');text('输入：忽略规则，索要邮箱密码',78,348,24,'#ffc2c2',700);text('这段文字来自外部邮件',78,397,18,'#d39c9f',500);arrow(360,467,360,530,'#f07878');rounded(80,550,560,118,18,'#12352f','#328c7b');text('检测为可疑指令 · 要求人工核对',360,602,25,'#cff5eb',700,'center');text('不回复发件人，也不执行邮件指令',360,640,18,'#9fcbbf',500,'center')}
+ else if(s==='report'){text('分析结果先落到本地',48,190,36,'#fff',800);rounded(48,278,624,344,18,'#18232e','#34414d');text('# 收件箱日报 · 今天',78,328,21,'#fff',700);text('1. [work] 面试安排确认',82,392,22,'#e5eaf0',600);text('需要准备项目介绍',118,430,18,'#9eaebc',500);text('2. [billing] 云服务账单',82,489,22,'#e5eaf0',600);text('3. [other] 可疑内容 · 已标记',82,548,22,'#f07d7d',600);text('Markdown 给人看 · JSON 便于后续扩展',360,690,19,'#9ca9b5',500,'center')}
+ else if(s==='send'){text('发送之前，双重闸门',48,190,36,'#fff',800);rounded(48,280,624,95,18,'#18232e','#34414d');text('默认：dry-run',78,340,27,'#e5eaf0',700);rounded(48,404,624,95,18,'#18232e','#34414d');text('命令：必须显式加 --send',78,464,25,'#e5eaf0',700);rounded(48,528,624,95,18,'#12352f','#328c7b');text('环境：MINMUSE_SEND_ENABLED=true',78,588,24,'#c9f0e6',700);text('收件人固定为 SMTP 登录邮箱本人',360,696,20,'#6dd8c1',700,'center')}
+ else if(s==='demo'){text('离线假邮件演示',48,190,36,'#fff',800);rounded(48,275,624,95,18,'#101720','#33414d');text('> python -m minmuse --demo',74,333,23,'#74e2c8',700);[['面试安排确认','work · 有待办'],['账单通知','billing · 无回复'],['可疑通知','other · 标记风险']].forEach((v,i)=>{let y=410+i*86;rounded(62,y,596,66,12,'#18232e','#2b3845');text(v[0],84,y+42,20,'#e3eaf1',600);text(v[1],630,y+42,18,i===2?'#f18181':'#6dd8c1',600,'right')});text('3 封样例 · 0 次外网请求 · 0 封真实邮件',360,710,18,'#a3b0bd',500,'center')}
+ else if(s==='setup'){text('接真邮箱前，先过三道检查',48,190,34,'#fff',800);[['01','专用应用密码放在 .env'],['02','先跑 --dry-run 看摘要'],['03','确认无误再开发送开关']].forEach((v,i)=>{let y=292+i*122;rounded(60,y,600,88,16,'#17232d','#34424f');text(v[0],92,y+54,21,'#6dd8c1',800);text(v[1],158,y+54,23,'#e4e9ef',600)})}
+ else if(s==='deploy'){text('阿里云：独立目录，独立 cron',48,190,34,'#fff',800);rounded(48,285,624,260,18,'#101720','#34424f');text('/opt/minmuse',78,350,25,'#6dd8c1',700);text('Python 虚拟环境',78,404,21,'#dce4ec',500);text('.env 权限 600',78,454,21,'#dce4ec',500);text('每日定时运行 MinMuse --send',78,504,21,'#dce4ec',500);rounded(48,585,624,85,16,'#30251a','#9b7441');text('不覆盖现有提醒服务；可单独回滚',360,639,21,'#f0d29e',700,'center')}
+ else if(s==='repo'){text('打开仓库，三份文件读懂主流程',48,190,34,'#fff',800);[['mailbox.py','怎么安全拿邮件'],['summarizer.py','模型与规则分类'],['agent.py','日报和发送闸门']].forEach((v,i)=>{let y=285+i*116;rounded(48,y,624,82,15,'#17232d','#34424f');text(v[0],80,y+36,22,'#6dd8c1',700);text(v[1],80,y+63,17,'#9eacba',500)})}
+ else if(s==='roadmap'){text('下一步：先草稿，再申请确认',48,190,34,'#fff',800);['去重：同一封邮件不重复整理','归档：按类别写入标签','回复：先生成草稿，人确认后再发送'].forEach((v,i)=>{rounded(56,278+i*115,608,78,16,'#18232e','#34424f');text(v,83,328+i*115,21,i===2?'#f0ca82':'#e2e8ef',600)})}
+ else {text('MinMuse：一条可检查的 Agent 流程',48,260,34,'#fff',800);['触发器 + 工具 + 模型 + 状态 + 行动边界'].forEach(v=>text(v,360,390,24,'#6dd8c1',700,'center'));rounded(75,490,570,115,18,'#12352f','#328c7b');text('先在假邮件上跑通，再连接真实邮箱',360,558,23,'#d7f5ee',700,'center');text('开源 · 可复现 · 可逐步扩展',360,660,19,'#a5b3c0',500,'center')}
+}
+
+const pad = n => String(Math.floor(n)).padStart(2, '0');
+const fmt = t => `${pad(t / 60)}:${pad(t % 60)}`;
+
+export function renderAtTime(canvas, t, cues, duration) {
+  ctx = canvas.getContext('2d');
+  const cue = cues.find(c => t >= c.start && t < c.end)
+    || [...cues].reverse().find(c => c.start <= t)
+    || cues[0];
+  scene(cue?.scene || 'hook', t);
+  const lines = wrap(cue?.text || '', 600, 'bold 34px "Microsoft YaHei UI",sans-serif');
+  const boxY = 870, boxH = 310;
+  rounded(36, boxY, 648, boxH, 20, 'rgba(7,12,18,.91)', '#34414c');
+  const startY = boxY + (boxH - (lines.length * 52)) / 2 + 36;
+  lines.forEach((line, i) => text(line, 360, startY + i * 52, 34, '#fff', 800, 'center'));
+  ctx.fillStyle = '#293643';
+  ctx.fillRect(48, 1220, 624, 4);
+  ctx.fillStyle = '#6dd8c1';
+  ctx.fillRect(48, 1220, 624 * Math.min(1, t / duration), 4);
+  text(fmt(t) + ' / ' + fmt(duration), 672, 1190, 15, '#afbbc7', 500, 'right');
+}

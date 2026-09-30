@@ -16,5 +16,8 @@ video/voice.wav
 video/*.webm
 video/*.mp4
 video/*.log
+video/remotion/node_modules/
+video/remotion/public/voice.wav
+video/remotion/*.png
 
 video/preview.png

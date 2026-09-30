@@ -73,6 +73,12 @@ Only message text is sent to that endpoint. If this is a concern, use a local Op
 - `minmuse/settings.py` — environment configuration
 - `docs/ARCHITECTURE.md` — flow and trust boundaries
 - `docs/VIDEO_PLAN.md` — 4–5 minute episode outline
+- `video/remotion/` — reproducible frame-based video renderer
+- `video/subtitles.srt` — subtitles for the narrated episode
+
+## Video walkthrough
+
+The narrated 4-minute episode is rendered with Remotion from the same scene artwork and subtitle timings. See [video/remotion/README.md](video/remotion/README.md) for local rendering. The exported MP4 and generated voice WAV stay out of Git; the cover, script, subtitle timings, and renderer source are included.
 
 ## Security boundaries
 
